@@ -13,22 +13,30 @@ class SecondPage extends StatefulWidget {
 
 class SecondPageState extends State<SecondPage> {
 
-  TextButton bottomSheetButton({required String colorString, required Color color}){
+  TextButton bottomSheetButton({required String colorString, required Color color, required Icon icon}){
     return TextButton(onPressed: (){
       setState(() {
         Navigator.pop(context);
         // _color = color;
       });
-    }, child: Text(colorString));
+    }, child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        icon,
+        SizedBox(width: 20,),
+        Text(colorString, style: TextStyle(color: Colors.black),)
+      ],
+    ));
   }
 
   Column bottom(){
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        const Text("Ma réponse est : "),
-        bottomSheetButton(colorString: "C'est vrai", color: Colors.red),
-        bottomSheetButton(colorString: "C'est faux", color: Colors.green),
-        bottomSheetButton(colorString: "Je ne sais pas", color: Colors.white)
+        const Text("Ma réponse est : ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+        bottomSheetButton(colorString: "C'est vrai", color: Colors.red, icon: Icon(Icons.check_circle, color: Colors.green,)),
+        bottomSheetButton(colorString: "C'est faux", color: Colors.green, icon: Icon(Icons.cancel, color: Colors.red,)),
+        bottomSheetButton(colorString: "Je ne sais pas", color: Colors.white, icon: Icon(Icons.question_mark))
       ],
     );
   }
@@ -81,11 +89,13 @@ class SecondPageState extends State<SecondPage> {
                 ),
               ),
             ),
+            SizedBox(height: 10,),
+
 
             //Bouton "Je réponds"
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  // backgroundColor: _color
+                  backgroundColor: Colors.white
                 ),
                 onPressed: (){
                   showModalBottomSheet(context: context,
@@ -97,13 +107,7 @@ class SecondPageState extends State<SecondPage> {
                         );
                       }
                   );
-                }, child: const Text("Bottom Sheet Modale")),
-
-            ElevatedButton(onPressed: (){
-              Scaffold.of(context).showBottomSheet((BuildContext context){
-                return bottom();
-              });
-            }, child: const Text("Persistante"))
+                }, child: const Text("Je réponds")),
           ],
         )
       )
