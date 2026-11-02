@@ -35,7 +35,7 @@ class HomeState extends State<HomePage> {
           child: Container(
             // width: MediaQuery.of(context).size.width, //Pour prendre la largerur selon l'écran du smartphone
             width: 300 ,
-            height: 300,
+            height: 306,
 
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -53,6 +53,14 @@ class HomeState extends State<HomePage> {
                   // _message,
                   style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
                 ),
+                SizedBox(height: 10,),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.white,
+                  ),
+                    onPressed: (){
+                  
+                }, child: const Text("Commencer le QUIZZ")),
               ],
             ),
           ),
