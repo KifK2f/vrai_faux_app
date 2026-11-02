@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vrai_faux_app/pages/second_page.dart';
 
 
 //Ce fichier contient un Sacffold donce sera une page ==> va dans le dossier pages
@@ -14,6 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeState extends State<HomePage> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +60,16 @@ class HomeState extends State<HomePage> {
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.white,
                   ),
-                    onPressed: (){
-                  
-                }, child: const Text("Commencer le QUIZZ")),
+                  onPressed: (){
+                    MaterialPageRoute route = MaterialPageRoute(builder: (BuildContext context){
+                      return SecondPage();
+                    });
+                    Navigator.of(context).push(route);
+                  },
+                  child: const Text("Commencer le QUIZZ")),
+
+
+
               ],
             ),
           ),
