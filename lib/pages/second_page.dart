@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vrai_faux_app/model/question.dart';
+import 'package:vrai_faux_app/model/datas.dart';
 
 class SecondPage extends StatefulWidget {
   const SecondPage({super.key});
@@ -12,6 +14,15 @@ class SecondPage extends StatefulWidget {
 }
 
 class SecondPageState extends State<SecondPage> {
+
+  final List<Question> _questions = AppDatas().listeQuestions;
+  late Question? _questionSelected;
+
+  @override
+  void initState() {
+    super.initState();
+    _questionSelected = _questions[0];
+  }
 
   TextButton bottomSheetButton({required String colorString, required Color color, required Icon icon}){
     return TextButton(onPressed: (){
@@ -40,6 +51,7 @@ class SecondPageState extends State<SecondPage> {
       ],
     );
   }
+
 
 @override
   Widget build(BuildContext context) {
@@ -70,16 +82,14 @@ class SecondPageState extends State<SecondPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/images/belgique.jpg",
-                      // "assets/images/${_carSelected.urlString}.jpg",
-                      //   _carSelected.urlString
-                      // width: MediaQuery.of(context).size.width, //Pour prendre la largerur selon l'écran du smartphone
+                      // "assets/images/belgique.jpg",
+                        _questionSelected!.getImage()
                     ),
                     // SizedBox(height: 10,),
                     Padding(
                       padding: const EdgeInsets.all(13),
                       child: Text(
-                        "La devise de la Belgique est l'union fait la force",
+                        _questionSelected!.question,
                         textAlign: TextAlign.center,
                         // _message,
                         style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.primary),
