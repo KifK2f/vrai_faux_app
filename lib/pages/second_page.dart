@@ -17,6 +17,8 @@ class SecondPageState extends State<SecondPage> {
 
   final List<Question> _questions = AppDatas().listeQuestions;
   late Question? _questionSelected;
+  int _score = 0;
+  int _index = 1;
 
   @override
   void initState() {
@@ -24,11 +26,18 @@ class SecondPageState extends State<SecondPage> {
     _questionSelected = _questions[0];
   }
 
-  TextButton bottomSheetButton({required String colorString, required Color color, required Icon icon}){
+  TextButton bottomSheetButton({required String colorString, bool? reponseSelected, required Icon icon}){
     return TextButton(onPressed: (){
       setState(() {
         Navigator.pop(context);
         // _color = color;
+        if (!reponseSelected!){
+        _score++;
+        _questionSelected = _questions[_score];
+        }
+        if(reponseSelected = _questionSelected!.reponse){
+            Text("Tu a raison");
+        }
       });
     }, child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -45,9 +54,9 @@ class SecondPageState extends State<SecondPage> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         const Text("Ma réponse est : ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        bottomSheetButton(colorString: "C'est vrai", color: Colors.red, icon: Icon(Icons.check_circle, color: Colors.green,)),
-        bottomSheetButton(colorString: "C'est faux", color: Colors.green, icon: Icon(Icons.cancel, color: Colors.red,)),
-        bottomSheetButton(colorString: "Je ne sais pas", color: Colors.white, icon: Icon(Icons.question_mark))
+        bottomSheetButton(colorString: "C'est vrai", reponseSelected: true, icon: Icon(Icons.check_circle, color: Colors.green,)),
+        bottomSheetButton(colorString: "C'est faux",reponseSelected: false, icon: Icon(Icons.cancel, color: Colors.red,)),
+        bottomSheetButton(colorString: "Je ne sais pas", icon: Icon(Icons.question_mark,))
       ],
     );
   }
@@ -57,13 +66,13 @@ class SecondPageState extends State<SecondPage> {
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
-        title: const Text("Score : 0"),
+        title: Text("Score : $_score"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: Center(
         child: Column(
           children: [
-            Text("Question numéro : 1/10",
+            Text("Question numéro : $_index/${_questions.length}",
               style: TextStyle(fontSize: 18,),
             ),
             SizedBox(height: 10,),
@@ -92,7 +101,7 @@ class SecondPageState extends State<SecondPage> {
                         _questionSelected!.question,
                         textAlign: TextAlign.center,
                         // _message,
-                        style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.primary),
+                        style: TextStyle(fontSize: 13.7, color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w700),
                       ),
                     ),
                   ],
