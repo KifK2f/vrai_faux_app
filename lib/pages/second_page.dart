@@ -18,7 +18,7 @@ class SecondPageState extends State<SecondPage> {
   final List<Question> _questions = AppDatas().listeQuestions;
   late Question? _questionSelected;
   int _score = 0;
-  int _index = 1;
+  int _index = 0;
 
   @override
   void initState() {
@@ -31,12 +31,12 @@ class SecondPageState extends State<SecondPage> {
       setState(() {
         Navigator.pop(context);
         // _color = color;
-        if (!reponseSelected!){
-        _score++;
-        _questionSelected = _questions[_score];
+        if (reponseSelected != null){
+        _index++;
         }
-        if(reponseSelected = _questionSelected!.reponse){
-            Text("Tu a raison");
+        _questionSelected = _questions[_index];
+        if (reponseSelected != _questionSelected!.reponse){
+            _score++;
         }
       });
     }, child: Row(
@@ -72,7 +72,7 @@ class SecondPageState extends State<SecondPage> {
       body: Center(
         child: Column(
           children: [
-            Text("Question numéro : $_index/${_questions.length}",
+            Text("Question numéro : ${_index+1}/${_questions.length}",
               style: TextStyle(fontSize: 18,),
             ),
             SizedBox(height: 10,),
