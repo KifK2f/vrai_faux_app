@@ -29,17 +29,21 @@ class SecondPageState extends State<SecondPage> {
   TextButton bottomSheetButton({required String colorString, bool? reponseSelected, required Icon icon}){
     return TextButton(onPressed: (){
       setState(() {
-        Navigator.pop(context);
-        // _color = color;
-        if (reponseSelected != null){
-        _index++;
-        }
-        _questionSelected = _questions[_index];
-        if (reponseSelected != _questionSelected!.reponse){
-            _score++;
-        }
-      });
-    }, child: Row(
+        Navigator.pop(context); // Ferme la bottom sheet
+        // _alertDialog(responseSelected);
+      });}
+      // return TextButton(onPressed: (){
+      // setState(() {
+      //   Navigator.pop(context); // Ferme la bottom sheet
+      //   if (reponseSelected != null){
+      //   _index++;
+      //   }
+      //   _questionSelected = _questions[_index];
+      //   if (reponseSelected != _questionSelected!.reponse){
+      //       _score++;
+      //   }
+      // });}
+    , child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         icon,
@@ -61,6 +65,66 @@ class SecondPageState extends State<SecondPage> {
     );
   }
 
+  // void _alertDialog(){
+  //   showDialog(context: context,
+  //       barrierDismissible: false, //Pour ne pas fermer le diaog lors d'un appui hors du cadre du dialog
+  //       builder: (BuildContext context){
+  //         return AlertDialog(
+  //           title: const Text("Raté!"),
+  //           // content: const Text("Etes vous sûr de vouloir incrémenter"),
+  //           content:                     Column(
+  //             children: [
+  //               Image.asset(
+  //                 "assets/images/faux.jpg",
+  //                 //   _questionSelected!.getImage()
+  //               ),
+  //             // Text(_questionSelected!.explication, style: TextStyle(color: Colors.green),),
+  //               Text("Raté!"),
+  //             ],
+  //           ),
+  //
+  //           actions: [
+  //
+  //             TextButton(onPressed: (){
+  //               setState(() {
+  //                 _score++;
+  //               });
+  //               Navigator.pop(context);
+  //             }, child: const Text("Ok")),
+  //
+  //           ],
+  //         );
+  //       }
+  //   );
+  // }
+
+
+  void _alertDialog(bool? responseSelected){
+    // Compare la réponse sélectionnée à la réponse correcte puis stocke le résultat (true ou false) dans 'correct'
+    final bool correct = responseSelected == _questionSelected!.reponse; //Une réponse correcte à une question est uen réponse qui est identique à la réponse attendue
+
+    showDialog(context: context,
+        barrierDismissible: false, //Pour ne pas fermer le diaog lors d'un appui hors du cadre du dialog
+        builder: (BuildContext context){
+          return AlertDialog(
+            title: Text(correct ? "C'est gagné !" : "Raté !"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset("assets/images/" + (correct ? "vrai.jpg" : "faux.jpg")  ) ,// On mets correct entre parenthèse car on ne peut pas concaté,ner un e chaine et un booléen,
+
+                //Opératuer ternaire
+                _questionSelected!.explication.isNotEmpty
+                  ? Text(_questionSelected!.explication) //Afficher l'explication si pas vide c'est à dire différent de ''
+                  : const SizedBox(), // Rien à afficher si l'explication est vide
+
+              ],
+            ),
+          );
+        }
+    );
+
+  }
 
 @override
   Widget build(BuildContext context) {
