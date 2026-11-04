@@ -30,7 +30,7 @@ class SecondPageState extends State<SecondPage> {
     return TextButton(onPressed: (){
       setState(() {
         Navigator.pop(context); // Ferme la bottom sheet
-        // _alertDialog(responseSelected);
+        _alertDialog(reponseSelected);
       });}
       // return TextButton(onPressed: (){
       // setState(() {
@@ -103,13 +103,17 @@ class SecondPageState extends State<SecondPage> {
     // Compare la réponse sélectionnée à la réponse correcte puis stocke le résultat (true ou false) dans 'correct'
     final bool correct = responseSelected == _questionSelected!.reponse; //Une réponse correcte à une question est uen réponse qui est identique à la réponse attendue
 
+    // if (responseSelected == null){
+    //   correct == null;
+    // }
+
     showDialog(context: context,
         barrierDismissible: false, //Pour ne pas fermer le diaog lors d'un appui hors du cadre du dialog
         builder: (BuildContext context){
           return AlertDialog(
             title: Text(correct ? "C'est gagné !" : "Raté !"),
             content: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: MainAxisSize.min, //Pour que la colum n ne prenne pas beaucop de place
               children: [
                 Image.asset("assets/images/" + (correct ? "vrai.jpg" : "faux.jpg")  ) ,// On mets correct entre parenthèse car on ne peut pas concaté,ner un e chaine et un booléen,
 
@@ -117,16 +121,62 @@ class SecondPageState extends State<SecondPage> {
                 _questionSelected!.explication.isNotEmpty
                   ? Text(_questionSelected!.explication) //Afficher l'explication si pas vide c'est à dire différent de ''
                   : const SizedBox(), // Rien à afficher si l'explication est vide
-
               ],
             ),
+            actions: [
+              TextButton(
+                  onPressed: (){
+                    Navigator.pop(context);
+                    _nextQuestion(correct);
+              },
+                  child: const Text("Ok"))
+            ],
           );
         }
     );
 
   }
 
-@override
+  void _nextQuestion(bool correct){
+    if (_index < _questions.length - 1){ // Vérifier que la question actuelle (index) n'est pas la dernière
+      setState(() {
+        if (correct) {_score++;} //Si la réponse est correcrte incrémenter le score
+        _index++;
+        _questionSelected = _questions[_index];
+      });
+    } else { //Si non ==> si c'est la dernière questin augmenter juste le score si réponse correcte
+      setState(() {
+        if (correct) _score++;
+      });
+      _finalDialog();
+    }
+
+  }
+
+  void _finalDialog() {
+    showDialog(context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context){
+          return AlertDialog(
+            title: const Text("Quiz terminé"),
+            content: Text("Ton score : $_score / ${_questions.length}"),
+            actions: [
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+                setState(() {
+                  _score = 0;
+                  _index = 0;
+                  _questionSelected = _questions[0];
+                });
+              }, child: const Text("Rejouer"))
+            ],
+          );
+        }
+    );
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
@@ -196,6 +246,5 @@ class SecondPageState extends State<SecondPage> {
       )
     );
   }
-
 
 }
