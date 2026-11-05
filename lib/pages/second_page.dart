@@ -30,7 +30,10 @@ class SecondPageState extends State<SecondPage> {
     return TextButton(onPressed: (){
       setState(() {
         Navigator.pop(context); // Ferme la bottom sheet
+        //Si on choisi " je ne sais pas" rien ne se passe
+        if (reponseSelected != null){
         _alertDialog(reponseSelected);
+        }
       });}
       // return TextButton(onPressed: (){
       // setState(() {
@@ -111,7 +114,7 @@ class SecondPageState extends State<SecondPage> {
         barrierDismissible: false, //Pour ne pas fermer le diaog lors d'un appui hors du cadre du dialog
         builder: (BuildContext context){
           return AlertDialog(
-            title: Text(correct ? "C'est gagné !" : "Raté !"),
+            title: Text(correct ? "C'est gagné " : "Raté !"),
             content: Column(
               mainAxisSize: MainAxisSize.min, //Pour que la colum n ne prenne pas beaucop de place
               children: [
@@ -158,17 +161,19 @@ class SecondPageState extends State<SecondPage> {
         barrierDismissible: false,
         builder: (BuildContext context){
           return AlertDialog(
-            title: const Text("Quiz terminé"),
-            content: Text("Ton score : $_score / ${_questions.length}"),
+            title: const Text("C'est fini pour le quizz!"),
+            content: Text("Votre score est de : $_score points"),
             actions: [
               TextButton(onPressed: (){
+                //2 pop pour revenir à la page d'accueil
+                Navigator.pop(context);
                 Navigator.pop(context);
                 setState(() {
                   _score = 0;
                   _index = 0;
                   _questionSelected = _questions[0];
                 });
-              }, child: const Text("Rejouer"))
+              }, child: const Text("Ok"))
             ],
           );
         }
